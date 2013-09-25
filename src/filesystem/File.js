@@ -23,10 +23,12 @@
 
 
 /*jslint vars: true, plusplus: true, devel: true, nomen: true, regexp: true, indent: 4, maxerr: 50 */
-/*global define, $ */
+/*global define */
 
 define(function (require, exports, module) {
     "use strict";
+    
+    var Q                   = require("Q");
     
     var FileSystemEntry     = require("filesystem/FileSystemEntry");
     
@@ -57,11 +59,11 @@ define(function (require, exports, module) {
      *
      * @param {string=} encoding Encoding for reading. Defaults to UTF-8.
      *
-     * @return {$.Promise} Promise that is resolved with the text and stats from the file,
+     * @return {Q.Promise} Promise that is resolved with the text and stats from the file,
      *        or rejected if an error occurred.
      */
     File.prototype.readAsText = function (encoding) {
-        var result = new $.Deferred();
+        var result = Q.defer();
         
         if (this._contents && this._stat) {
             result.resolve(this._contents, this._stat);
@@ -77,7 +79,7 @@ define(function (require, exports, module) {
             }.bind(this));
         }
         
-        return result.promise();
+        return result.promise;
     };
     
     /**
@@ -86,11 +88,11 @@ define(function (require, exports, module) {
      * @param {string} data Data to write.
      * @param {string=} encoding Encoding for data. Defaults to UTF-8.
      *
-     * @return {$.Promise} Promise that is resolved with the file's new stats when the 
+     * @return {Q.Promise} Promise that is resolved with the file's new stats when the 
      *        writing is complete, or rejected if an error occurred.
      */
     File.prototype.write = function (data, encoding) {
-        var result = new $.Deferred();
+        var result = Q.defer();
         
         this._impl.writeFile(this._path, data, encoding ? {encoding: encoding} : {}, function (err, stat) {
             if (err) {
@@ -102,7 +104,7 @@ define(function (require, exports, module) {
             }
         }.bind(this));
         
-        return result.promise();
+        return result.promise;
     };
     
     // Export this class
