@@ -442,6 +442,14 @@ define(function (require, exports, module) {
                 return this._codeMirror.getScrollInfo().top;
             }
         });
+        
+        if (document.getLanguage().getName() === "JPEG" || 
+            document.getLanguage().getName() === "GIF" || document.getLanguage().getName() === "PNG") {
+            $("<div style='z-index:11;position:absolute;top:0;background-color:rgb(248,248,248);width:100%;height:100%'><img src='file:///" + document.file.fullPath + "'></div>")
+                .appendTo(this._codeMirror.getWrapperElement());
+            this._codeMirror.setOption("readOnly", true);
+        }
+
     }
     
     /**
