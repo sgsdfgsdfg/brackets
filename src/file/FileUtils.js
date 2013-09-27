@@ -86,6 +86,21 @@ define(function (require, exports, module) {
         return result.promise();
     }
 
+    /**
+     * Asynchronously stat a file
+     * @param {!File} file File to stat
+     * @return {$.Promise} a jQuery promise that resolves with the file's stats
+     */
+    function stat(file) {
+        var result = $.Deferred();
+        
+        file.stat()
+            .then(result.resolve, result.reject)
+            .done();
+        
+        return result.promise();
+    }
+    
     /** @const */
     var LINE_ENDINGS_CRLF = "CRLF";
     /** @const */
@@ -413,6 +428,7 @@ define(function (require, exports, module) {
     exports.getFileErrorString             = getFileErrorString;
     exports.readAsText                     = readAsText;
     exports.writeText                      = writeText;
+    exports.stat                           = stat;
     exports.convertToNativePath            = convertToNativePath;
     exports.convertWindowsPathToUnixPath   = convertWindowsPathToUnixPath;
     exports.getNativeBracketsDirectoryPath = getNativeBracketsDirectoryPath;

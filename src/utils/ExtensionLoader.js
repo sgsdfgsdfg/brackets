@@ -195,7 +195,7 @@ define(function (require, exports, module) {
         var fileExists = false, statComplete = false;
         var file = brackets.appFileSystem.getFileForPath(extensionPath);
         
-        file.stat()
+        FileUtils.stat(file)
             .then(function (stat) {
                 statComplete = true;
                 if (stat.isFile()) {
@@ -214,8 +214,7 @@ define(function (require, exports, module) {
                 } else {
                     result.reject();
                 }
-            }, result.reject)
-            .done();
+            }, result.reject);
         
         return result.promise();
     }
