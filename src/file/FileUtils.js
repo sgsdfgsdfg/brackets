@@ -86,6 +86,131 @@ define(function (require, exports, module) {
         return result.promise();
     }
 
+    /**
+     * Asynchronously stat a file
+     * @param {!FileSystemEntry} file FileSystemEntry to stat
+     * @return {$.Promise} a jQuery promise that resolves with the file's stats
+     */
+    function stat(file) {
+        var result = $.Deferred();
+        
+        file.stat()
+            .then(result.resolve, result.reject)
+            .done();
+        
+        return result.promise();
+    }
+
+    /**
+     * Asynchronously determine whether a file exists
+     * @param {!FileSystemEntry} file FileSystemEntry that may or may not exist
+     * @return {$.Promise} a jQuery promise that resolves with a boolean that
+     *  indicates whether the file exists
+     */
+    function exists(file) {
+        var result = $.Deferred();
+        
+        file.exists()
+            .then(result.resolve, result.reject)
+            .done();
+        
+        return result.promise();
+    }
+    
+    /**
+     * Asynchronously rename a file
+     * @param {!FileSystemEntry} file FileSystemEntry to be renamed
+     * @param {!string} name New file name
+     * @return {$.Promise} a jQuery promise that resolves when the file has been renamed
+     */
+    function rename(file, name) {
+        var result = $.Deferred();
+        
+        file.exists(name)
+            .then(result.resolve, result.reject)
+            .done();
+        
+        return result.promise();
+    }
+
+    /**
+     * Asynchronously unlink a file
+     * @param {!FileSystemEntry} file FileSystemEntry to be unlinked
+     * @return {$.Promise} a jQuery promise that resolves when the file has been unlinked
+     */
+    function unlink(file) {
+        var result = $.Deferred();
+        
+        file.unlink()
+            .then(result.resolve, result.reject)
+            .done();
+        
+        return result.promise();
+    }
+
+    /**
+     * Asynchronously move a file to the trash
+     * @param {!FileSystemEntry} file FileSystemEntry to be moved to the trash
+     * @param {!string} name New file name
+     * @return {$.Promise} a jQuery promise that resolves when the file has been moved to the trash
+     */
+    function moveToTrash(file) {
+        var result = $.Deferred();
+        
+        file.moveToTrash()
+            .then(result.resolve, result.reject)
+            .done();
+        
+        return result.promise();
+    }
+
+    /**
+     * Asynchronously create a directory with a given mode
+     * @param {!Directory} dir Directory to create
+     * @param {int=} mode The mode for the directory.
+     * @return {$.Promise} a jQuery promise that resolves when the directory has been created with its stats
+     */
+    function create(directory, mode) {
+        var result = $.Deferred();
+        
+        directory.create(mode)
+            .then(result.resolve, result.reject)
+            .done();
+        
+        return result.promise();
+    }
+
+    /**
+     * Asynchronously get the contents of a directory
+     * @param {!Directory} dir Directory for which to get contents
+     * @return {$.Promise} a jQuery promise that resolves with the contents of the directory
+     */
+    function getContents(directory) {
+        var result = $.Deferred();
+        
+        directory.getContents()
+            .then(result.resolve, result.reject)
+            .done();
+        
+        return result.promise();
+    }
+    
+    /**
+     * Asynchronously resolve a file name into a file object
+     * @param {!FileSystem} fileSystem FileSystem used to resolve the name
+     * @param {!string} name Name of the file to be resolved
+     * @return {$.Promise} a jQuery promise that resolves with the File object
+     */
+    function resolve(fileSystem, name) {
+        var result = $.Deferred();
+        
+        fileSystem.resolve(name)
+            .then(result.resolve, result.reject)
+            .done();
+        
+        return result.promise();
+    }
+    
     /** @const */
     var LINE_ENDINGS_CRLF = "CRLF";
     /** @const */
@@ -413,6 +538,14 @@ define(function (require, exports, module) {
     exports.getFileErrorString             = getFileErrorString;
     exports.readAsText                     = readAsText;
     exports.writeText                      = writeText;
+    exports.stat                           = stat;
+    exports.exists                         = exists;
+    exports.rename                         = rename;
+    exports.unlink                         = unlink;
+    exports.moveToTrash                    = moveToTrash;
+    exports.create                         = create;
+    exports.getContents                    = getContents;
+    exports.resolve                        = resolve;
     exports.convertToNativePath            = convertToNativePath;
     exports.convertWindowsPathToUnixPath   = convertWindowsPathToUnixPath;
     exports.getNativeBracketsDirectoryPath = getNativeBracketsDirectoryPath;
